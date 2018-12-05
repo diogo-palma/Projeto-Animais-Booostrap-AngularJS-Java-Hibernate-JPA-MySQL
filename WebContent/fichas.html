@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <meta name="description" content="">
+   <meta name="author" content="">
+   <link rel="icon" href="favicon.ico">
+   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+   <script src="js/angular.js"></script>
+   <script src="controller/fichas.js"></script>
+
+   <title>Sistema Web</title>
+
+   <!-- Bootstrap core CSS -->
+   <link href="css/bootstrap.min.css" rel="stylesheet">
+   <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.5.0/css/all.css' integrity='sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU'
+      crossorigin='anonymous'>
+
+   <!-- Custom styles for this template -->
+   <link href="carousel.css" rel="stylesheet">
+   <style>
+      .footer {
+         position: absolute;
+         bottom: 0;
+         width: 100%;
+         height: 60px; /* Set the fixed height of the footer here */
+         line-height: 60px; /* Vertically center the text there */
+         background-color: #f5f5f5;
+      }
+
+      .logo{
+         background-color: #007bff;
+         color: white !important;
+         padding: 15px;
+         width: 100px;
+         margin-top: -10px;
+         border-bottom-left-radius: 10px;
+         border-bottom-right-radius: 10px;
+         text-align: center;
+      }
+
+      #search2 {
+         width: 100%;
+         position: relative;
+      }
+
+      #search2 .fa-search {
+         color: #666;
+         top: 10px;
+         left: 5px;
+         position: absolute;
+      }
+
+      /* The switch - the box around the slider */
+      .switch {
+         zoom: 65%;
+         position: relative;
+         display: inline-block;
+         width: 60px;
+         height: 34px;
+      }
+
+      /* Hide default HTML checkbox */
+      .switch input {
+         opacity: 0;
+         width: 0;
+         height: 0;
+      }
+
+      /* The slider */
+      .slider {
+         position: absolute;
+         cursor: pointer;
+         top: 0;
+         left: 0;
+         right: 0;
+         bottom: 0;
+         background-color: #ccc;
+         -webkit-transition: .4s;
+         transition: .4s;
+      }
+
+      .slider:before {
+         position: absolute;
+         content: "";
+         height: 26px;
+         width: 26px;
+         left: 4px;
+         bottom: 4px;
+         background-color: white;
+         -webkit-transition: .4s;
+         transition: .4s;
+      }
+
+      input:checked + .slider {
+         background-color: #2196F3;
+      }
+
+      input:focus + .slider {
+         box-shadow: 0 0 1px #2196F3;
+      }
+
+      input:checked + .slider:before {
+         -webkit-transform: translateX(26px);
+         -ms-transform: translateX(26px);
+         transform: translateX(26px);
+      }
+
+      /* Rounded sliders */
+      .slider.round {
+         border-radius: 34px;
+      }
+
+      .slider.round:before {
+         border-radius: 50%;
+      }
+      
+ 
+	td span::after {
+		content: "\A";
+		white-space: pre;
+	}
+	
+	am-multiselect .dropdown-menu{
+	    padding-left: 5px;
+	    padding-right: 5px;
+	}
+	
+	am-multiselect .dropdown-menu > li > a {
+	    padding: 3px 10px;
+	    cursor:pointer;
+	}
+	
+	am-multiselect .dropdown-menu > li.selected {
+	    background-color: #ADD8E6;
+	}
+      
+
+   </style>
+</head>
+
+<body style="padding-top: 0;" ng-app="fichasModulo" ng-controller="fichasController">
+
+   <header>
+      <div ng-include src="'menu.html'"></div>
+   </header>
+
+
+
+   <main role="main" class="container">
+      <div style="margin-top: 5px">.</div>
+      <h1 class="mt-5">Fichas</h1>
+
+      <hr>
+      <div class="container" style="background-color: #fff38742; 
+         padding: 10px; 
+         box-shadow: 2px 2px #8888885e;
+         border: 2px solid transparent; 
+         border-radius: 10px">
+         <h5>Cadastro</h5>
+         <ng-form name="itemForm">
+            <div class="row">
+               <div class="input-group col-3">
+                  <div class="input-group-prepend">
+                     <span class="input-group-text" id="basic-addon1">Id</span>
+                  </div>
+                  <input type="text" readonly class="form-control" ng-model="ficha.codigo" placeholder="Código"
+                     aria-describedby="basic-addon1">
+               </div>
+               <div class="input-group col-8">
+                  <div class="input-group-prepend">
+                     <span class="input-group-text" id="basic-addon1">Data de Cadastro</span>
+                  </div>
+                  <input type="text" readonly class="form-control" ng-model="ficha.dtCadastro | date:'dd/MM/yyyy'" placeholder="Data"
+                     aria-describedby="basic-addon1">
+               </div>
+            </div>
+            <div class="row" style="margin-top: 10px">
+               <div class="input-group col-12">
+
+                  <textarea required class="form-control" ng-model="ficha.observacao" placeholder="Observação" id="exampleTextarea"
+                     rows="3"></textarea>
+               </div>
+               <div class="input-group col-12" style="margin-top:10px">
+                  <div class="col-2">
+                     <span>Ativo?</span>
+                     <label class="switch" style="margin-left: 10px">
+                        <input type="checkbox" ng-model="ficha.ativo">
+
+                        <span class="slider round"></span>
+                     </label>
+                  </div>
+                  <div class="col-10">
+                  <span>Selecione os animais:</span>
+                     <select required name="animal" multiple="multiple"   id="animais" class="form-control" ng-model="ficha.animaismodel" ng-options="animal.nome for animal in animais track by animal.codigo">
+
+                     </select>
+                               
+                   
+                  </div>
+                  
+               </div>
+            </div>
+            <div class="row" style="margin-top: 15px">
+               <div class="form-group col-sm">
+                  <button ng-click="limparCampos()" style="border: 1px solid #ccc;" type="button" class="btn btn-light">Novo</button>
+                  <button ng-disabled="!itemForm.$valid" ng-click="salvar()" type="submit" class="btn btn-success">Salvar</button>
+
+               </div>
+            </div>
+         </ng-form name="itemForm">
+      </div>
+      </div>
+      </ng-form>
+
+
+      <hr>
+
+       <div class="form-group">
+	       <table border="0" cellspacing="5" cellpadding="5">
+                    <tbody><tr>
+                        <td>Data Inicial:</td>
+                        <td><input type="text" id="min" name="min"></td>
+                    </tr>
+                    <tr>
+                        <td>Data Final:</td>
+                        <td><input type="text" id="max" name="max"></td>
+                    </tr>
+                </tbody></table>
+	  </div>
+      <table id="table" class="table table-striped table-hover">
+	      <thead>
+	         <th>Código</th>
+	         <th>Data de Cadastro</th>
+	         <th>Observação</th>
+	         <th>Ativo</th>
+	         <th>Animais</th>
+	         <th>#</th>
+	       </thead>
+         <tr ng-repeat="fichaTabela in fichas | filter:pesquisaFicha | filter:dt">
+            <td>{{fichaTabela.codigo}}</td>
+            <td>{{fichaTabela.dtCadastro | date:'dd/MM/yyyy'}}</td>
+            <td>{{fichaTabela.observacao}}</td>
+            <td>{{fichaTabela.ativo == true ? 'Sim' : 'Não'}}</td>
+            <td><span ng-repeat="animais in fichaTabela.animaismodel">{{animais.nome}}</span> </td>
+            <td>
+               <button ng-click="selecionaFicha(fichaTabela)" class="btn btn-primary btn-sm" type="button">
+                  <i class="fas fa-edit"></i>
+               </button>
+               <button ng-click="excluir(fichaTabela)" class="btn btn-danger btn-sm" type="button">
+                  <i class="fas fa-trash"></i>
+               </button>
+            </td>
+         </tr>
+      </table>
+
+   </main>
+
+
+   <!-- Bootstrap core JavaScript
+    ================================================== -->
+   <!-- Placed at the end of the document so the pages load faster -->
+   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"></script>
+	<script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery-3.3.1.min.js"></script>
+	
+	<script src="js/ng-table.min.js"></script>
+   <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+   <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+   <script src="js/holder.min.js"></script>
+   <script src="js/moment.min.js"></script>
+   <script>
+   $.fn.dataTable.ext.search.pop();
+   
+   $.fn.dataTableExt.afnFiltering.push(
+        function( settings, data, dataIndex ) {
+            var min  = $('#min').val()
+            var max  = $('#max').val()
+     
+            var createdAt = data[1] || 0; // Our date column in the table
+            //createdAt=createdAt.split(" ");
+            var startDate   = moment(min, "DD/MM/YYYY").subtract(1, "days").format("DD-MM-YYYY");
+            var endDate     = moment(max, "DD/MM/YYYY").add(1, "days");
+            var diffDate = moment(createdAt, "DD/MM/YYYY");
+            //console.log(startDate);
+            
+            
+            if (
+              (min == "" || max == "") ||
+              (diffDate.isBetween(startDate, endDate))
+
+
+            ) {  return true;  }
+            return false;
+
+        }
+    );
+
+   
+   $(document).ready(function() {
+	   var table =  $('#table').DataTable( {
+	        "language": {
+	        	"sEmptyTable": "Nenhum registro encontrado",
+	            "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+	            "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+	            "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+	            "sInfoPostFix": "",
+	            "sInfoThousands": ".",
+	            "sLengthMenu": "_MENU_ Resultados por página",
+	            "sLoadingRecords": "Carregando...",
+	            "sProcessing": "Processando...",
+	            "sZeroRecords": "Nenhum registro encontrado",
+	            "sSearch": "Pesquisar:",
+	            "oPaginate": {
+	                "sNext": "Próximo",
+	                "sPrevious": "Anterior",
+	                "sFirst": "Primeiro",
+	                "sLast": "Último"
+	            }
+	        }
+	    } );
+
+	    $('#min, #max').keyup( function() {
+	        table.draw();
+	    } );
+	} );
+
+  
+	</script>
+   
+</body>
+
+</html>
